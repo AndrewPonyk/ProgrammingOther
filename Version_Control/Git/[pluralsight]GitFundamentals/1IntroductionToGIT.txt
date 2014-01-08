@@ -1,0 +1,76 @@
+1)	History of Version control systems, and advantages of GIT , few words.
+	First generation of source cotrol :
+	 single-file
+         no networking
+         e.g SCCS(40 years ago , RCS(Revision Control System - 30 years ago)
+
+	Second generation:
+ 	 Multi file
+	 Centralized
+	 e.g CVS, VSS , SVN, TFS, Perforce
+	
+	Third generation
+	 Changesets
+	 Distributed
+	 e.g Git , Hg, Bazaar, BitKeeper
+
+	
+	Adwantages of DVCS (Discributed version control systems)
+	-DIFFERENT TOPOLOGIES :
+	 *Centralized(developers push changes to one central repo)
+	 *Hierarchical(developers push changes to subsystem-base repos;
+	 	sub-systems repos are periodically merged
+	 )
+	 *Distributed(push changes to own repos)
+	-Backups are easy (each developer has full backup)
+	-Reliable branching/merging(feature branches, 
+	-Full local history
+
+	
+	Git was developed by Linus Torvalds.
+	Git promted by Linux-BitKeeper separation (bitkeeper - is commercial , bitkeeper desiced to 
+	stop suplying linux project => Linus create own =) ).
+	Git runs on Linux , OS X , Windosw 
+	Git Design goals (speed, simplicity , strong branch/merge support , discributed, scales well for big projects ).
+---------------------------------------------------------------
+2) Installing and configure git , describe .
+
+	On Windows you can use 'msysgit' . Installation is easy .
+	
+	On Linux you can use
+	 * apt-get install git-core (debian ubuntu)
+	 * yum install git-core (fedora)
+
+	Installation is easy , but can be some problems with 'mergetool' ,how to configure it	
+
+	
+
+	'git --version'  # show version of installed git
+	'git init ' # create repo in current folder
+
+
+	Git CONFIGURATION(3 levels)
+	 * git config --system ('system level' /etc/gitconfig or /programfiles/git\etc\gitconfig - apply to entire computer)
+	 * git config --global  ('user level' ~/.gitcofig or  c:\users\<name>\.gitconfig)
+	 * git config ('repo level'  stored in .git/config in each repo)
+
+	Examples of configuration 
+	 * git config --global user.name "Adam Smith"
+	   git config --bloabl user.email "adam@gmail.com"
+	   #and now  we can list git configuration
+	   git config --global --list
+	 
+	 * git config --global help.autocorrect  1 # git will help if we make syntax mistake
+	 * git config --global color.ui auto # will display text in console in different colors
+
+	* git config --global core.autocrlf true  
+	# Git can handle this by auto-converting CRLF line endings 	into LF when you commit, 
+	and vice versa when it checks out code 		onto your filesystem. 
+	You can turn on this functionality with 	the core.autocrlf setting. 
+	If you’re on a Windows machine, set it to 	true — this converts LF endings into CRLF when you check out code.
+
+
+	* Repo settings override user settings, and user settings override system settings .
+
+	* To REMOVE some config property you can do : 'git config --unset user.name'
+---------------------------------------------------------------

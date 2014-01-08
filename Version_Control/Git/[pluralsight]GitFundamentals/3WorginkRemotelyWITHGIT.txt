@@ -1,0 +1,85 @@
+1) How to clone Git repo from remote ?
+	
+	* git clone <remote_repo_address>  - clone full repo from remote to local machine
+		(address can be http , ssh)
+	
+	* git log   - to see full history of repo, (git log --oneline   - one line per commit)
+
+	git protocols :
+		http(s)
+		git
+		ssh
+		file
+-------------------------------------------------------------------------------------
+2) Basic repo Statistic in Git , describe .
+	* git log --oneline | wc -l         - show count of commits in repo
+	* git log --graph           - show diffent branches and merges
+	* git shortlog           - shows users and their commits
+	
+	
+	* git show HEAD   - show the last commit , date , who made , what was added
+	
+	* git remote - shows which remote repo are present
+
+	* git branch     - shows git branches
+	* git branch -r  - shows remote branches
+	
+	* git tag  - shows tags (tags is like versions of application)
+-------------------------------------------------------------------------------------
+3) Git how to add remote to local repo , how to fetch and then merge from remote , what is git pull ?
+	You have local repo , and you want to 'connect ' it with your empty github repo
+		* add remote to your repo
+			git remote add origin https://github.com/AndrewPonyk/GitFundamentals.git
+		* git remote -v          - check that you add correct value
+		* git fetch       - fech data from remote 
+		* git merge origin/master       - merge local and remote branches
+
+		
+		* git remote rm origin      - removes remote
+		
+	What is 'git pull' ??? - Answer : 'git pull' is alias for ' git fetch; git merge '
+	
+	!!! Before git pull  we must set correspondence between local and remote branches (connect them =)):
+		git branch --set-upstream master origin/master
+-------------------------------------------------------------------------------------
+4) What is git push ? What you have to do before first push ?
+	* git push        - push your changes to remote
+
+	
+	before you can perform push , you must set upstream branch  (connect branches remote and local)
+		git branch --set-upstream master origin/master
+	And now you can : 'git push'  =)
+-------------------------------------------------------------------------------------
+5) What is Git tag ? Creating tags , verifying tags , and pushing them to remote.
+   How to see diff between two tags ?
+	
+	Git tag - is just alias for some commit (like version of application)
+	
+		* git tag - shows the list of existing tags
+	
+	Create tag (and bing it to some commit)
+		* git tag v0 b100f    - bind tag 'v0' to commit b100f(it is hash of commit)
+		
+	Create tag with message 
+		* git tag -a v1.0_with_message  - bing tag 'v1.0_with_message'  to HEAD (default editor will be opened and write some message , or you can use '-m')
+
+	We can also "SIGN" tags with rsa  .!!!!!!(git tag -s v1.0_signed) you need rsa key
+	
+	!!! TO push tags you need
+		* git push --tags       
+		
+		
+	!!!!!!!!! Git diff between given two tags
+			$ git diff tag1 tag2
+
+		or show log between them:
+			$ git log tag1..tag2
+		
+		sometimes it may be convenient to see only the list of files that were changed:
+			$ git diff tag1 tag2 --stat
+
+		and then look at the differences for some particular file:
+			$ git diff tag1 tag2 -- some/file/name
+
+		A tag is only a reference to the latest commit 'on that tag', 
+		so that you are doing a diff on the commits between them.

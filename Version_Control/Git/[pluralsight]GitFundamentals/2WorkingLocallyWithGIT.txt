@@ -1,0 +1,210 @@
+1) How to create empty repo , add files to stage area(describe),  and perform first commit  in Git?
+	git init  - command to create repo in current folder,
+	
+	git status - shows modified files  , files added to stage area, removed file..
+	
+	git add <file_name>  - add file to 'stage' area, all files from stage area will be commited on next commit
+
+	git commit -m "Message ..." - MAKE commit  
+	
+	git log - shows commits history (date , hash, message. This command has a lot of arguments)
+
+	git add -u - add all MODIFIED files to 'stage' (MODIFIED and DELETED)
+	
+	git add -A - add ALL files to stage
+---------------------------------------------------------
+2) What is STAGE area in Git  , how to add file to stage , how to remove file from stage?
+
+	To stage a file is simply to prepare it finely for a commit.
+	Git, with its index allows you to commit only certain parts of the changes
+	you've done since the last commit. Say you're working on two features - one is finished,
+	and one still needs some work done. You'd like to make a 
+	commit and go home (5 o'clock, finally!) but wouldn't like to commit 
+	the parts of the second feature, which is not done yet. You stage the parts you
+	know belong to the first feature, and commit. Now your commit is your project
+	with the first feature done, while the second is still in work-in-progress in
+	your working directory.
+	
+	
+	EXAMPLE : we modified two files file1.txt and file2.txt,
+		and we want commit only changes in file1.txt , so we do
+		* git add file1.txt          - file1.txt is now in stage area
+		* git commit -m "Fixing bug 1234"
+		
+	only file1.txt changes were commited
+	
+	
+	EXAMPLE :
+	I mistakenly added files using the command
+		git add file
+	I have not yet run git commit. Is there a way to undo this or remove these files 
+	from the commit?
+	
+	ANSWER :You can also git reset HEAD <file>, which will remove it from the 
+	current index (the "about to be committed" area) without changing anything else.
+	Also we can define alias for this command :
+		git config --global alias.unstage 'reset HEAD ' Now I can use 'git unstage myfile'
+	
+	
+	
+	!!!!
+	DO NOT USE "git rm" as suggested in another answer. This is used to stop tracking a file, and depending on the flags, 
+	it may even remove it from your file system which is not what you want to do.
+	
+	git rm --cached FILENAME does NOT delete the file, it removes it from the index (aka unstages).
+	
+---------------------------------------------------------
+3)	How to see diff between two commits in Git ?
+	
+	* git log - show commits history
+	
+	* You can use 'gitk' - Git gui  
+	
+	* You can use  : 'git diff 93949..38438' - show different between two commits (93949,38438 -hashes of commits)
+	Or 'git diff HEAD~1..HEAD (or HEAD~1 - 1 commit before head)
+---------------------------------------------------------
+4) How to commit only one part of file in Git (commit only part of changes )?
+
+	You can do 'git add -p filename.x' , and it'll ask you what you want to stage. 
+
+	You can then:
+
+	hit 's' to split whatever change into smaller hunks. 
+	This only works if there is at least one unchanged line in the "middle" of the hunk, 
+	which is where the hunk will be split
+	
+	then hit 'y' to stage that hunk
+	
+	or 'n' to not stage that hunk
+
+	or 'e' to manually edit the hunk (useful when git can't split it automatically)
+	
+	and 'd' to exit or go to the next file.
+	
+	Use '?' to get the whole list of available options.
+	If the file is not in the repository yet, do first git add -N filename.x. 
+	Afterwards you can go on with git add -p filename.x.
+---------------------------------------------------------
+5) Deleting and renaming files in Git repo , describe .
+
+	To delete file from repo and commit this operation :
+		* remove file from repo (from folder =))
+		* add this DELETION to stage area  : 'git rm <filename>' or 'git add -A' or 'git add -u' 
+		* git commit -m "message..."
+		
+		
+	To rename file in repo and commit this renaming:
+		* rename file in repo (git will see renaming as removing file with old name , and create file with
+		  new name)
+		* add this RENAMING to stage area (add one deletion(with 'git rm file') and one new file) : git add -A
+
+---------------------------------------------------------
+6)  Undoing and redoing changes in Git repo , describe .
+
+	* git reset --soft HEAD~1      - back to previous commit , AND STAGE area is saved(because --soft option)
+	* git reset --hard HEAD~1      - back to previous commit (and all changes are deleted !  carefull)
+	
+	SYNOPSIS
+		git reset [-q] [<commit>] [--] <paths>…
+		git reset (--patch | -p) [<commit>] [--] [<paths>…]
+		git reset [--soft | --mixed | --hard | --merge | --keep] [-q] [<commit>]
+	
+		--soft
+		Does not touch the index file nor the working tree at all (but resets the head to <commit>,
+		just like all modes do). This leaves all your changed files "Changes to be committed", 
+		as git status would put it.
+
+		--mixed
+		Resets the index but not the working tree (i.e., the changed files are preserved 
+		but not marked for commit) and reports what has 
+		not been updated. This is the DEFAULT action.
+
+		--hard
+		Resets the index and working tree. Any changes to tracked files in the working
+		tree since <commit> are discarded.
+
+		--merge
+		Resets the index and updates the files in the working tree that are
+		different between <commit> and HEAD, but keeps those which are different between 
+		the index and working tree (i.e. which have changes which have not been added). 
+		If a file that is different between <commit> and the index has unstaged changes, reset is aborted.
+
+		In other words, --merge does something like a git read-tree -u -m <commit>, 
+		but carries forward unmerged index entries.
+
+		--keep
+		Resets index entries and updates files in the working tree that are different between <commit> and HEAD. 
+		If a file that is different between <commit> and HEAD has local changes, reset is aborted.
+	
+---------------------------------------------------------
+7) Cleaning working copy in Git repo, describe .
+	
+	Sometimes we need to delete temporary files . TO delete files which are not 
+	in stage area we can perform
+	* git clean -n       - shows which files will be removed
+	* git clean -f       - removes files which are not in stage area,and not in commit(files which are 'red')
+	
+---------------------------------------------------------
+8) Ignoring files in Git repo, describe different ways to ignore files(.gitignore syntax, .git\exclude\info file , ).
+
+	Create file '.gitignore' in repo root folder , in this files list all ignored resources .
+	
+	'.gitignore' Example :
+		/logs/*.txt           - text files in <repo_root>/logs folder
+		logs/*.txt			  - text files in all 'logs' folders inside repo
+		/logs/				  - all logs folder
+	
+	!!!!!!!!
+	!!!! .gitignore - with this file we can ingonre only files which are not already commited !!!!!!!
+	So we cannot get repository from remote , and set files to ignore .
+	
+	So , if you have repo and global .gitignore file , and you want add some new files to ignore, 
+	but dont want modify .gitignore  you can do 
+	
+	* modify .git/exclude/info  file :
+		# git ls-files --others --exclude-from=.git/info/exclude
+		# Lines that start with '#' are comments.
+		# For a project mostly in C, the following would be a good set of
+		# exclude patterns (uncomment them if you want to use them):
+		# *.[oa]
+		# *~
+		*.temp
+		
+	* execute command : git ls-files --others --exclude-from=.git/info/exclude
+	
+	AND NOW EVERY NEW FILE in REPO with '.temp' extension will be ignored
+	(!!!! BUT THIS WAY we cant ignore already commited files !!!!!!)
+	
+	
+	!!!!!!!!!!!!!!!!
+	!!!!!!!!!!!!!!!!!!!!!
+	!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	IF YOU WANT  TO IGNORE FILES WHICH WAS ALREADY COMMITED , YOU CAN DO 
+	Use git-update-index to temporarily ignore changes to files that are already under version control:
+
+	git update-index --assume-unchanged <files>
+	To undo that use:
+	git update-index --no-assume-unchanged <files>
+	
+	Also have a look at the skip-worktree and no-skip-worktree options for update-index 
+	if you need this to persist past a git-reset
+------------------------------------------------------------------------------------
+9) How do I edit an incorrect commit message in Git?
+	
+	git commit --amend -m "New commit message"
+	
+------------------------------------------------------------------------------------
+10) Git how to go back to a specific commit then go back to the present ?
+
+	Suppose your current branch is master and the old commit is a1b2c3, then you
+	can change all the files in your working tree back to the old commit with:
+
+	git checkout a1b2c3
+		... and return to master with:
+
+	git checkout master
+	
+	This way of hopping about in your git history (i.e. checking out a commit
+	with its object name, also known as its hash or SHA1sum) is very useful for 
+	finding a previous good commit for git bisect, for example, since it won't move your branches.
+-------------------------------------------------------------------------------------
