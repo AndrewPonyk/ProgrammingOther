@@ -2,12 +2,13 @@ package com.ap.creational.factorymethod;
 
 public class FactoryMethodProgram {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	public static void main(String[] args) {	
+		
+		//int providerType = GetTypeOfLoggingProviderFromConfigFile(); 
+		int providerType = 1; // hardcode
+		 ILogger logger = LoggerProviderFactory.GetLoggingProvider(providerType); 
 
+		 logger.LogMessage("Hello Factory Method Design Pattern."); 
 	}
 
 }
