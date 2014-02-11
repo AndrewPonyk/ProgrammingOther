@@ -22,4 +22,4 @@ public class EmailProcessor {
 			first.handleRequest(email);
 		}
 		
-	}
+}
