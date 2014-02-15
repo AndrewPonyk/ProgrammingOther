@@ -137,7 +137,6 @@ class LblDisplay extends JLabel {
         med.registerDisplay(this);
         setFont(new Font("Arial", Font.BOLD, 24));
     }
- 
 }
  
 public class MediatorProgram extends JFrame implements ActionListener {
