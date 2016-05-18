@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+	<luceneMatchVersion>LUCENE_48</luceneMatchVersion>
+	<lib dir="${project.lib.dir}" regex=".*\.jar" />
+	<dataDir>${solr.data.dir}/${solr.core.name}/data</dataDir>
+	<directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}" />
+	<codecFactory class="solr.SchemaCodecFactory" />
+	<schemaFactory class="ClassicIndexSchemaFactory" />
+	<indexConfig>
+		<lockType>${solr.lock.type:native}</lockType>
+	</indexConfig>
+	<updateHandler class="solr.DirectUpdateHandler2">
+		<!-- 
+	    	This event listener will be in charge of automatically load the sample data on Solr startup 
+	    -->
+	    <listener event="firstSearcher" class="org.gazzax.labs.solr.ase.ch3.listener.SolrStartupListener">
+	      <str name="datafile">${solr.solr.home}/example-data/books.xml</str>
+	    </listener>	 	
+	</updateHandler>
+	<query>
+		<maxBooleanClauses>1024</maxBooleanClauses>
+		<filterCache class="solr.FastLRUCache" size="512" initialSize="512" autowarmCount="0" />
+		<queryResultCache class="solr.LRUCache" size="512" initialSize="512" autowarmCount="0" />
+		<documentCache class="solr.LRUCache" size="512" initialSize="512" autowarmCount="0" />
+		<enableLazyFieldLoading>true</enableLazyFieldLoading>
+		<queryResultWindowSize>20</queryResultWindowSize>
+		<queryResultMaxDocsCached>200</queryResultMaxDocsCached>
+		<useColdSearcher>false</useColdSearcher>
+		<maxWarmingSearchers>2</maxWarmingSearchers>
+	</query>  	
+	<requestDispatcher handleSelect="false">
+		<requestParsers enableRemoteStreaming="true" multipartUploadLimitInKB="2048000" formdataUploadLimitInKB="2048" />
+		<httpCaching never304="true" />
+	</requestDispatcher>
+	<requestHandler name="/select" class="solr.SearchHandler" default="true">
+		<lst name="defaults">
+			<str name="sort">title asc</str>
+			<str name="echoParams">explicit</str>
+			<int name="rows">10</int>
+			<str name="q">*:*</str>
+			<bool name="facet">false</bool>
+		</lst>
+		<!-- 
+			Here we declare we want to use, after default components execution, our custom component 
+		-->
+		<arr name="last-components">
+			<str>prices</str>
+		</arr>	
+	</requestHandler>
+	<requestHandler name="/update" class="solr.UpdateRequestHandler"/>
+	<requestHandler name="/admin/" class="solr.admin.AdminHandlers" />
+	
+	<!-- Here is where we declare and configure our custom search component -->
+	<searchComponent name="prices" class="org.gazzax.labs.solr.ase.ch3.sp.RealTimePriceComponent">
+		<str name="datasource-jndi-name">jdbc/amicus</str>
+		<bool name="dummy-mode">true</bool>
+	</searchComponent>	
+	<admin>
+		<defaultQuery>*:*</defaultQuery>
+	</admin>
+</config>
