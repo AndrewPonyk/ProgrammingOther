@@ -1,0 +1,5 @@
+:this is folder for 4 types of chrome extensions
+    1)browser_action
+    2)page_action
+    3)override
+    4)devtools

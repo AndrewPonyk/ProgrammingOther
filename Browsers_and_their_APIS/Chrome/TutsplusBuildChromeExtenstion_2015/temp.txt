@@ -1,2 +1,0 @@
-this is folder for 4 types of chrome
-extensions

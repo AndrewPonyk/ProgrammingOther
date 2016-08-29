@@ -1,0 +1,5 @@
+{
+    "manifest_version": 2,
+    "name": "page_action",
+    "version":"0.1.0"
+}
