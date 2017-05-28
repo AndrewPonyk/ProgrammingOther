@@ -1,0 +1,52 @@
+{
+  "manifest_version": 2,
+  "name": "browser_action",
+  "version": "0.1.0",
+  "browser_action": {
+    "default_title": "Parimach extension",
+    "default_popup": "popup/popup.html"
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "permissions": [
+    "tabs",
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*/*"
+      ],
+      "js": [
+        "content_script.js"
+      ],
+      "css": [
+        "content_style.css"
+      ]
+    }
+  ],
+  "commands": {
+    "make_bet": {
+      "suggested_key": {
+        "default": "Ctrl+Q"
+      },
+      "description": "Make a bet"
+    },
+    "confirm_bet": {
+      "suggested_key": {
+        "default": "Ctrl+B"
+      },
+      "description": "Confirm a bet"
+    },
+    "open_parimatch_live": {
+      "suggested_key": {
+        "default": "Ctrl+M"
+      },
+      "description": "Open parimatch live"
+    }
+  }
+}

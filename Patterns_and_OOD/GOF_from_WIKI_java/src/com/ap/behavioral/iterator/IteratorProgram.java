@@ -7,7 +7,7 @@ public class IteratorProgram {
 	      ConcreteAggregate a = new ConcreteAggregate();
           a.setThis(0, "Item A");
           a.setThis(1, "Item B");
-          a.setThis(2, "Item C");
+          a.setThis(5, "Item C");
 
           // Create Iterator and provide aggregate
           ConcreteIterator i = new ConcreteIterator(a);
