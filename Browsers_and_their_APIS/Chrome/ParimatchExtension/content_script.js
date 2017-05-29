@@ -20,7 +20,7 @@ function selectBets(betLinks) {
     for (var i = 0; i < betLinks.length; i++) {
         var betRowText = betLinks[i].closest("div").previousElementSibling.innerText;
 
-        if (betLinks[i].innerText <= "1.04" && betRowText.indexOf("Статистика") < 0 ) {
+        if (betLinks[i].innerText <= "1.04" && checkBet(betRowText)) {
             betLinks[i].click();
         }
     }
@@ -34,7 +34,26 @@ function set3UAHAndFocusConfirmButton(){
     document.querySelector("#do_stake").focus();
 }
 
-function checkBet(){
+function checkBet(betRowText){
     //TODO:
     // make conditions
+    if(betRowText.toLowerCase().indexOf("Статистика") >= 0){
+        return false;
+    }
+
+    if(betRowText.indexOf("U-13")>=0 || betRowText.indexOf("U-14")>=0 || betRowText.indexOf("U-15")>=0 || betRowText.indexOf("U-16")>=0 ||  betRowText.indexOf("U-17")>=0
+        ||  betRowText.indexOf("U-18")>=0 ||  betRowText.indexOf("U-19")>=0){
+        return false;
+    }
+
+    if(betRowText.toLowerCase().indexOf("мол.") >=0 || betRowText.toLowerCase().indexOf("молод") >=0){
+        return false;
+    }
+
+    // skip friendly games
+    if( betRowText.toLowerCase().indexOf("товари") >=0 ){
+        return false;
+    }
+
+    return true;
 }
