@@ -10,7 +10,7 @@ function openParimatchLive() {
     });
 }
 
-
+// listener for commands from manifest.json
 chrome.commands.onCommand.addListener(function (command) {
     if (command === "make_bet") {
         sendCommandToTab("make_bet_selection");
@@ -22,10 +22,12 @@ chrome.commands.onCommand.addListener(function (command) {
         if (checkBetsTimeout) {
             clearInterval(checkBetsTimeout);
             checkBetsTimeout = null;
+            alert("stop");
         } else {
             checkBetsTimeout = setInterval(function () {
                 sendCommandToTab("check_balance_and_bet")
-            }, 5000);
+            }, 9000);
+            alert("start")
         }
     }
 });
