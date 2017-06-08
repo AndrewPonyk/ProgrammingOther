@@ -1,6 +1,6 @@
 // content scripts can be applied directly to page and page dom, but there are a lot a limitations
 
-console.log("This is content script");
+console.log("This is content script from vnc))");
 
 var betInterval = setInterval(function () {
     var curBalanceElement = document.querySelector("#ownerInfo tr td:nth-child(7)");
@@ -104,7 +104,7 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
 });
 
 function selectBets(betLinks, maxBets) {
-    console.log("Start selecting bets");
+    console.log("Start selecting bets" + new Date().toLocaleString());
     maxBets = maxBets || 4;
     var counter = 0;
     document.title = "";
@@ -323,6 +323,16 @@ function isCurrentScoreValid(competition, currentScore) {
 
     }
 
+    if (competition.indexOf("гандбол") >= 0) {
+        var scoreCheckResult = checkHandBallScore(currentScore);
+        
+        if(!scoreCheckResult){
+            console.log("Wrong score in HandBall : " + currentScore );
+        }
+
+        return scoreCheckResult;
+    }
+
 
     return true;
 }
@@ -429,6 +439,20 @@ function checkTennisScore(currentScore){
     return true;
 }
 
+function checkHandBallScore(currentScore){
+	var bracketPosition = currentScore.indexOf("(");
+	var parsedScoreArr = currentScore.substring(0, bracketPosition).split("-");
+	if (parsedScoreArr.length < 1){
+		return false;
+	}
+	
+	//TODO Add: if scoreSum > 19 and difference > 4 return true 
+
+	return (parseInt(parsedScoreArr[0]) + parseInt(parsedScoreArr[1])) > 30 &&
+	Math.abs(parseInt(parsedScoreArr[0]) - parseInt(parsedScoreArr[1])) > 1;
+
+}
+
 function searchEventByTitle(arr, title){
     var resultArray = arr.filter(function(a){ return a.betTitle && a.betTitle.toLowerCase().
         indexOf(title.toLowerCase())>0 });
@@ -437,4 +461,10 @@ function searchEventByTitle(arr, title){
         return resultArray[0];
     }
     return null;
+}
+
+function cashOut(){
+
+   //TODO add cashout if it is less than 0.70
+   
 }

@@ -22,12 +22,12 @@ chrome.commands.onCommand.addListener(function (command) {
         if (checkBetsTimeout) {
             clearInterval(checkBetsTimeout);
             checkBetsTimeout = null;
-            alert("stop");
+            alert("stop.");
         } else {
             checkBetsTimeout = setInterval(function () {
                 sendCommandToTab("check_balance_and_bet")
             }, 9000);
-            alert("start")
+            alert("start.")
         }
     }
 });
