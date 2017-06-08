@@ -432,6 +432,11 @@ function checkTennisScore(currentScore){
     var firstSetWinner = parseInt(sets[0].split("-")[0]) > parseInt(sets[0].split("-")[1]) ? 0 : 1;
     var looser = firstSetWinner == 0 ? 1 : 0;
 
+    if ( parseInt(sets[sets.length-1].split("-")[firstSetWinner]) <=
+           parseInt(sets[sets.length-1].split("-")[looser])  ){
+        return false;
+    }
+
     if (currentScore.indexOf("7") >= 0 ){
         return false;
     }
