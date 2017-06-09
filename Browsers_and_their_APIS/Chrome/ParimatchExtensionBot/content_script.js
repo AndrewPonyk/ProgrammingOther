@@ -18,6 +18,12 @@ var betInterval = setInterval(function () {
         // bet can change coef, so it became invalid
         validBets = false;
     }
+
+    if (currBalance < 3){
+	//if we have zero on balance -> skip 8 iterations ))
+        localStorage.afterZeroBalanceCounter = 8;
+    }
+
     if (currBalance >= 3 && validBets) {
         if (document.querySelector("#stakeNo[style='color:red']")) {
             window.close();
@@ -83,7 +89,7 @@ var betInterval = setInterval(function () {
             //alert(localStorage.getItem("wrongBetItems"));
         }
     }
-    setTimeout(function(){window.close()}, 3600);// close window after bet
+    setTimeout(function(){window.close()}, 3700);// close window after bet
 }, 3200);
 
 
@@ -105,6 +111,15 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
 
 function selectBets(betLinks, maxBets) {
     console.log("Start selecting bets" + new Date().toLocaleString());
+    
+    if (localStorage.afterZeroBalanceCounter){
+        localStorage.afterZeroBalanceCounter = parseInt(localStorage.afterZeroBalanceCounter)-1;
+	if(localStorage.afterZeroBalanceCounter>=0){
+		console.log("Skip selecting, because Zero money counter = " + localStorage.afterZeroBalanceCounter);
+   		return;	
+	}
+    }
+
     maxBets = maxBets || 4;
     var counter = 0;
     document.title = "";
@@ -223,6 +238,32 @@ function checkBet(betRowText) {
         return false;
     }
 
+   if (betRowText.toLowerCase().indexOf("сквош") >= 0) {
+        return false;
+    }
+
+    if (betRowText.toLowerCase().indexOf("поло") >= 0) {
+        return false;
+    }
+if (betRowText.toLowerCase().indexOf("хоккейбол") >= 0) {
+        return false;
+    }
+
+
+    if (betRowText.toLowerCase().indexOf("футбол") >= 0 && 
+           (
+             betRowText.toLowerCase().indexOf("швеция") >= 0 || betRowText.toLowerCase().indexOf("кариока") >= 0 ||
+             (betRowText.toLowerCase().indexOf("россия") && betRowText.toLowerCase().indexOf("дивизион"))
+           )
+
+) {
+        return false;
+    }
+
+    if (betRowText.toLowerCase().indexOf("бейсбол") >= 0) {
+        return false;
+    }
+
     return true;
 }
 
@@ -266,7 +307,7 @@ function checkTimeFromEventStart(datetime, event) {
     }
 
     if (betTitle.indexOf("футбол") >= 0) {
-        return diffMinutes > 37;
+        return diffMinutes > 39;
     }
 
     if (betTitle.indexOf("баскетб") >= 0 && diffMinutes < 33) {
@@ -284,10 +325,6 @@ function checkTimeFromEventStart(datetime, event) {
 
     if (betTitle.indexOf("футзал") >= 0) {
         return diffMinutes > 32;
-    }
-
-    if (betTitle.indexOf("бейсбол") >= 0) {
-        return diffMinutes > 69;
     }
 
     return true;
@@ -314,7 +351,7 @@ function isCurrentScoreValid(competition, currentScore) {
         return scoreCheckResult;
     }
 
-    if (competition.indexOf("теннис") >= 0) {
+    if (competition.indexOf("теннис") >= 0 && competition.indexOf("настоль") < 0) {
         var scoreCheckResult = checkTennisScore(currentScore);
         if(!scoreCheckResult){
             console.log("Wrong score in Tennis : " + currentScore );
@@ -434,6 +471,11 @@ function checkTennisScore(currentScore){
 
     if ( parseInt(sets[sets.length-1].split("-")[firstSetWinner]) <=
            parseInt(sets[sets.length-1].split("-")[looser])  ){
+        return false;
+    }
+
+   if ( (parseInt(sets[sets.length-1].split("-")[firstSetWinner]) +
+           parseInt(sets[sets.length-1].split("-")[looser])) < 3 ){
         return false;
     }
 
