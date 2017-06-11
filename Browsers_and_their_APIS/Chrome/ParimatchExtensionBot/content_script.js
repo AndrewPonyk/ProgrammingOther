@@ -1,4 +1,6 @@
 // content scripts can be applied directly to page and page dom, but there are a lot a limitations
+//1-1(6-4,5-7,2-5) 0:0 tennis
+// 0-1(2-6,0-2) 0:0 - wrong score, why?
 
 console.log("This is content script from vnc))");
 
@@ -169,8 +171,10 @@ function selectBets(betLinks, maxBets) {
     }
 
     localStorage.setItem("wrongBetItems", "");
-    if(counter > 1){
+    if(counter > 0){
         document.querySelector(".btn_orange").click();
+    } else {
+     console.log("Counter is < 1 :" + counter );
     }
 }
 
