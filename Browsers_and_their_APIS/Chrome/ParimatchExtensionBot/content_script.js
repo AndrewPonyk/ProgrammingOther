@@ -17,7 +17,7 @@ var betInterval = setInterval(function () {
     var currBalance = curBalanceElement.innerText ? parseFloat(curBalanceElement.innerText) : 0;
     var validBets = true;
     if(betText.indexOf("1.05") > 0 || betText.indexOf("1.06") > 0 || betText.indexOf("1.07") > 0
-        || betText.indexOf("1.08") > 0 || betText.indexOf("1.08") > 0 || betText.indexOf("1.09") > 0 ){
+        || betText.indexOf("1.08") > 0 || betText.indexOf("1.08") > 0 || betText.indexOf("1.09") > 0 || betText.indexOf("1.1") > 0 ){
         // bet can change coef, so it became invalid
         validBets = false;
     }
@@ -197,6 +197,7 @@ function checkBet(betRowText) {
     if (betRowText.toLowerCase().indexOf("статистика") >= 0) {
         return false;
     }
+console.log(betRowText);
 
     if (betRowText.indexOf("u-13") >= 0 || betRowText.indexOf("u-14") >= 0 || betRowText.indexOf("u-15") >= 0 || betRowText.indexOf("u-16") >= 0 || betRowText.indexOf("u-17") >= 0
         || betRowText.indexOf("u-18") >= 0 || betRowText.indexOf("u-19") >= 0) {
@@ -250,6 +251,11 @@ function checkBet(betRowText) {
     if (betRowText.toLowerCase().indexOf("поло") >= 0) {
         return false;
     }
+
+    if (betRowText.toLowerCase().indexOf("формула 1") >= 0) {
+        return false;
+    }
+
 if (betRowText.toLowerCase().indexOf("хоккейбол") >= 0) {
         return false;
     }
@@ -258,10 +264,11 @@ if (betRowText.toLowerCase().indexOf("хоккейбол") >= 0) {
     if (betRowText.toLowerCase().indexOf("футбол") >= 0 && 
            (
              betRowText.toLowerCase().indexOf("швеция") >= 0 || betRowText.toLowerCase().indexOf("кариока") >= 0 ||
-             (betRowText.toLowerCase().indexOf("россия") && betRowText.toLowerCase().indexOf("дивизион"))
+             (betRowText.toLowerCase().indexOf("россия") >= 0 && betRowText.toLowerCase().indexOf("дивизион") >= 0)
            )
 
 ) {
+console.log("WRONG football");
         return false;
     }
 
@@ -312,7 +319,7 @@ function checkTimeFromEventStart(datetime, event) {
     }
 
     if (betTitle.indexOf("футбол") >= 0) {
-        return diffMinutes > 39;
+        return diffMinutes > 70;
     }
 
     if (betTitle.indexOf("баскетб") >= 0 && diffMinutes < 36) {
@@ -443,7 +450,7 @@ function checkVoleyBallScore(currentScore){
 
     if (quarters[0].split("-")[0] > 25 || quarters[0].split("-")[1] > 25 ||
         quarters[1].split("-")[0] > 25 || quarters[1].split("-")[1] > 25) {
-        result = false;
+        return false;
     }
 
     var currentSet = quarters.length;
