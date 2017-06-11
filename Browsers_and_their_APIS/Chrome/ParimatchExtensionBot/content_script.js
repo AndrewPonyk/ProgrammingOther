@@ -3,6 +3,7 @@
 // 0-1(2-6,0-2) 0:0 - wrong score, why?
 
 console.log("This is content script from vnc))");
+var betAmount = 3;
 
 var betInterval = setInterval(function () {
     var curBalanceElement = document.querySelector("#ownerInfo tr td:nth-child(7)");
@@ -314,7 +315,7 @@ function checkTimeFromEventStart(datetime, event) {
         return diffMinutes > 39;
     }
 
-    if (betTitle.indexOf("баскетб") >= 0 && diffMinutes < 33) {
+    if (betTitle.indexOf("баскетб") >= 0 && diffMinutes < 36) {
         var obj = {};
         obj.betTitle = betTitle;
         obj.availableTime = new Date(before.setMinutes(before.getMinutes() + 29));
@@ -387,6 +388,11 @@ function checkBasketBallScore(currentScore){
         return false;
     }
 
+    var currentScoreArray = currentScore.substring(0, bracketsPositions[0]).split("-");
+    if(parseInt(currentScoreArray[0]) + parseInt(currentScoreArray[1]) < 43){
+        return false;
+    }
+
     var quarters = currentScore.substring(bracketsPositions[0] + 1, bracketsPositions[1]).split(",");
     if (quarters.length < 2) {
         return false;
@@ -397,7 +403,7 @@ function checkBasketBallScore(currentScore){
     var looser = firstQuarterWinner == 0 ? 1 : 0;
 
     if (firstQuarterWinner == secondQuarterWinner &&
-        (parseInt(quarters[1].split("-")[0]) + parseInt(quarters[1].split("-")[1])) > 11) {
+        (parseInt(quarters[1].split("-")[0]) + parseInt(quarters[1].split("-")[1])) > 17) {
         result = true;
 
         if (quarters.length > 2) {
