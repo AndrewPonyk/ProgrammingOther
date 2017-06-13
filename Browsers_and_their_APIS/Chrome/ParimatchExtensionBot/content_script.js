@@ -266,14 +266,14 @@ console.log(betRowText);
     }
 
 
-    if (betRowText.toLowerCase().indexOf("футбол") >= 0 && 
-           (
-             betRowText.toLowerCase().indexOf("швеция") >= 0 || betRowText.toLowerCase().indexOf("кариока") >= 0 ||
-             (betRowText.toLowerCase().indexOf("россия") >= 0 && betRowText.toLowerCase().indexOf("дивизион") >= 0)
-           )
+    if (betRowText.toLowerCase().indexOf("футбол") >= 0 &&
+        (
+            betRowText.toLowerCase().indexOf("швеция") >= 0 || betRowText.toLowerCase().indexOf("кариока") >= 0 ||
+            (betRowText.toLowerCase().indexOf("россия") >= 0 && betRowText.toLowerCase().indexOf("дивизион") >= 0)
+        )
 
-) {
-console.log("WRONG football");
+    ) {
+        console.log("WRONG football");
         return false;
     }
 
@@ -324,7 +324,7 @@ function checkTimeFromEventStart(datetime, event) {
     }
 
     if (betTitle.indexOf("футбол") >= 0) {
-        return diffMinutes > 70;
+        return diffMinutes > 73;
     }
 
     if (betTitle.indexOf("баскетб") >= 0 && diffMinutes < 36) {
@@ -337,7 +337,7 @@ function checkTimeFromEventStart(datetime, event) {
     }
 
     if (betTitle.indexOf("гандбол") >= 0) {
-        return diffMinutes > 24;
+        return diffMinutes > 27;
     }
 
     if (betTitle.indexOf("футзал") >= 0) {
@@ -477,7 +477,14 @@ function checkVoleyBallScore(currentScore){
     return result;
 }
 
+//checkTennisScore('1-1(2-6,6-2,3-4) 15:30')
+//checkTennisScore('1-1(2-6,0-2) 15:15') - true
+//checkTennisScore('1-1(2-6,0-2) 15:0') - false
 function checkTennisScore(currentScore){
+    currentScore = currentScore.replace(/ /g, '');
+    currentScore = currentScore.toLowerCase();
+    currentScore = currentScore.replace(/adv/g, '50');
+
     var bracketsPositions = [currentScore.indexOf("("), currentScore.indexOf(")")];
     if (bracketsPositions[0] < 0 || bracketsPositions[1] < 0){
         return false;
@@ -488,24 +495,46 @@ function checkTennisScore(currentScore){
         return false;
     }
 
-    var firstSetWinner = parseInt(sets[0].split("-")[0]) > parseInt(sets[0].split("-")[1]) ? 0 : 1;
-    var looser = firstSetWinner == 0 ? 1 : 0;
 
-    if ( parseInt(sets[sets.length-1].split("-")[firstSetWinner]) <=
-           parseInt(sets[sets.length-1].split("-")[looser])  ){
+    if (sets.length == 2 ){
+        var firstSetVinner = parseInt(sets[0].split("-")[0]) > parseInt(sets[0].split("-")[1]) ? 0 : 1;
+        var firstSetLooser = firstSetVinner == 0 ? 1 : 0;
+
+        if (parseInt(sets[1].split("-")[firstSetLooser]) >= parseInt(sets[1].split("-")[firstSetVinner])){
+            return false;
+        }
+    }
+
+
+    var currentSet = sets.length-1;
+    var currentPoints = currentScore.substring(bracketsPositions[1]+1).split(":");
+    var currentSetLeader = parseInt(sets[currentSet].split('-')[0]) > parseInt(sets[currentSet].split('-')[1]) ? 0 : 1;
+    var currentSetLooser = currentSetLeader == 0 ? 1 : 0;
+
+    if(sets[currentSet][0] == sets[currentSet][1]){
         return false;
     }
 
-   if ( (parseInt(sets[sets.length-1].split("-")[firstSetWinner]) +
-           parseInt(sets[sets.length-1].split("-")[looser])) < 3 ){
-        return false;
+    if (parseInt(sets[currentSet].split("-")[currentSetLeader]) - parseInt(sets[currentSet].split("-")[currentSetLooser]) == 2 &&
+        parseInt(currentPoints[currentSetLeader]) >= parseInt(currentPoints[currentSetLooser])) {
+        return true;
     }
 
-    if (currentScore.indexOf("7") >= 0 ){
-        return false;
+    if (parseInt(sets[currentSet].split("-")[currentSetLeader]) - parseInt(sets[currentSet].split("-")[currentSetLooser]) > 2){
+        return true;
     }
 
-    return true;
+    if ( (parseInt(sets[currentSet].split("-")[0]) +
+             parseInt(sets[currentSet].split("-")[1])) < 2 ){
+          return false;
+    }
+
+    if (parseInt(currentPoints[currentSetLeader]) - parseInt(currentPoints[currentSetLooser]) > 15) {
+        return true;
+    }
+
+
+    return false;
 }
 
 function checkHandBallScore(currentScore){
@@ -515,11 +544,9 @@ function checkHandBallScore(currentScore){
 		return false;
 	}
 	
-	//TODO Add: if scoreSum > 19 and difference > 4 return true 
-
-	return (parseInt(parsedScoreArr[0]) + parseInt(parsedScoreArr[1])) > 31 &&
+	//TODO Add: if scoreSum > 19 and difference > 4 return true
+	return (parseInt(parsedScoreArr[0]) + parseInt(parsedScoreArr[1])) > 32 &&
 	Math.abs(parseInt(parsedScoreArr[0]) - parseInt(parsedScoreArr[1])) > 1;
-
 }
 
 function searchEventByTitle(arr, title){
