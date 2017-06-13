@@ -25,8 +25,9 @@ chrome.commands.onCommand.addListener(function (command) {
             alert("stop.");
         } else {
             checkBetsTimeout = setInterval(function () {
-                sendCommandToTab("check_balance_and_bet")
-            }, 13000);
+//alert('why' + new Date());                
+sendCommandToTab("check_balance_and_bet")
+            }, 11000);
             alert("start.")
         }
     }

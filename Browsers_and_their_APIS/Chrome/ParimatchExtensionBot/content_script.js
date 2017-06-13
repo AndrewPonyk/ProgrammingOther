@@ -6,6 +6,7 @@ console.log("This is content script from vnc))");
 var betAmount = 3;
 
 var betInterval = setInterval(function () {
+//alert(1);
     var curBalanceElement = document.querySelector("#ownerInfo tr td:nth-child(7)");
     var betHistory = localStorage.getItem("betHistory") || "";
 
@@ -256,7 +257,11 @@ console.log(betRowText);
         return false;
     }
 
-if (betRowText.toLowerCase().indexOf("хоккейбол") >= 0) {
+    if (betRowText.toLowerCase().indexOf("хоккейбол") >= 0) {
+        return false;
+    }
+
+    if (betRowText.toLowerCase().indexOf("шары") >= 0) {
         return false;
     }
 
@@ -512,7 +517,7 @@ function checkHandBallScore(currentScore){
 	
 	//TODO Add: if scoreSum > 19 and difference > 4 return true 
 
-	return (parseInt(parsedScoreArr[0]) + parseInt(parsedScoreArr[1])) > 30 &&
+	return (parseInt(parsedScoreArr[0]) + parseInt(parsedScoreArr[1])) > 31 &&
 	Math.abs(parseInt(parsedScoreArr[0]) - parseInt(parsedScoreArr[1])) > 1;
 
 }
