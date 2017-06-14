@@ -264,7 +264,11 @@ console.log(betRowText);
     if (betRowText.toLowerCase().indexOf("шары") >= 0) {
         return false;
     }
-
+   
+	// disable footbal until app can parse 
+    if ( betRowText.toLowerCase().indexOf("футбол") >=0 ){
+         return false;
+    }
 
     if (betRowText.toLowerCase().indexOf("футбол") >= 0 &&
         (
@@ -516,7 +520,7 @@ function checkTennisScore(currentScore){
     }
 
     if (parseInt(sets[currentSet].split("-")[currentSetLeader]) - parseInt(sets[currentSet].split("-")[currentSetLooser]) == 2 &&
-        parseInt(currentPoints[currentSetLeader]) >= parseInt(currentPoints[currentSetLooser])) {
+        parseInt(currentPoints[currentSetLeader]) > parseInt(currentPoints[currentSetLooser])) {
         return true;
     }
 
@@ -525,7 +529,7 @@ function checkTennisScore(currentScore){
     }
 
     if ( (parseInt(sets[currentSet].split("-")[0]) +
-             parseInt(sets[currentSet].split("-")[1])) < 2 ){
+             parseInt(sets[currentSet].split("-")[1])) < 4 ){
           return false;
     }
 
@@ -545,7 +549,7 @@ function checkHandBallScore(currentScore){
 	}
 	
 	//TODO Add: if scoreSum > 19 and difference > 4 return true
-	return (parseInt(parsedScoreArr[0]) + parseInt(parsedScoreArr[1])) > 32 &&
+	return (parseInt(parsedScoreArr[0]) + parseInt(parsedScoreArr[1])) > 34 &&
 	Math.abs(parseInt(parsedScoreArr[0]) - parseInt(parsedScoreArr[1])) > 1;
 }
 
