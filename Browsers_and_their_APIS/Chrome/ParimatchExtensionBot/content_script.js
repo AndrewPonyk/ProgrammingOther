@@ -23,18 +23,18 @@ var betInterval = setInterval(function () {
         validBets = false;
     }
 
-    if (currBalance < 3){
+    if (currBalance < 6){
 	//if we have zero on balance -> skip 8 iterations ))
         localStorage.afterZeroBalanceCounter = 8;
     }
 
-    if (currBalance >= 3 && validBets) {
+    if (currBalance >= 6 && validBets) {
         if (document.querySelector("#stakeNo[style='color:red']")) {
             window.close();
         }
 
         if(document.querySelector("input[name=sums]")){
-            document.querySelector("input[name=sums]").value = "3";
+            document.querySelector("input[name=sums]").value = "6";
         }
 
         var expressBetElement = document.querySelector("#r1");
@@ -93,8 +93,8 @@ var betInterval = setInterval(function () {
             //alert(localStorage.getItem("wrongBetItems"));
         }
     }
-    setTimeout(function(){window.close()}, 3700);// close window after bet
-}, 3200);
+    setTimeout(function(){window.close()}, 3100);// close window after bet
+}, 4610);
 
 
 // ------------------------------------------------- DOM
@@ -270,6 +270,12 @@ console.log(betRowText);
          return false;
     }
 
+	// disable footbal until app can parse 
+    if ( betRowText.toLowerCase().indexOf("бадминт") >=0 ){
+         return false;
+    }
+
+
     if (betRowText.toLowerCase().indexOf("футбол") >= 0 &&
         (
             betRowText.toLowerCase().indexOf("швеция") >= 0 || betRowText.toLowerCase().indexOf("кариока") >= 0 ||
@@ -284,6 +290,11 @@ console.log(betRowText);
     if (betRowText.toLowerCase().indexOf("бейсбол") >= 0) {
         return false;
     }
+// to do
+    if (betRowText.toLowerCase().indexOf("настоль") >= 0) {
+        return false;
+    }
+
 
     return true;
 }
@@ -301,10 +312,10 @@ function checkTimeFromEventStart(datetime, event) {
     console.log(betTitle + "----->" + diffMinutes);
     var betTimesAvailable = JSON.parse((localStorage.betTimesAvailable || "[]"));
 
-    if ( betTitle.indexOf("теннис") >= 0 && betTitle.indexOf("настоль") < 0 && diffMinutes < 50) {
+    if ( betTitle.indexOf("теннис") >= 0 && betTitle.indexOf("настоль") < 0 && diffMinutes < 48) {
         var obj = {};
         obj.betTitle = betTitle;
-        obj.availableTime = new Date(before.setMinutes(before.getMinutes() + 58));
+        obj.availableTime = new Date(before.setMinutes(before.getMinutes() + 48));
         betTimesAvailable.push(obj);
         localStorage.betTimesAvailable = JSON.stringify(betTimesAvailable);
         return false;
@@ -324,7 +335,7 @@ function checkTimeFromEventStart(datetime, event) {
     }
 
     if (betTitle.indexOf("настоль") >= 0) {
-        return diffMinutes > 32;
+        return diffMinutes > 34;
     }
 
     if (betTitle.indexOf("футбол") >= 0) {
@@ -549,7 +560,7 @@ function checkHandBallScore(currentScore){
 	}
 	
 	//TODO Add: if scoreSum > 19 and difference > 4 return true
-	return (parseInt(parsedScoreArr[0]) + parseInt(parsedScoreArr[1])) > 34 &&
+	return (parseInt(parsedScoreArr[0]) + parseInt(parsedScoreArr[1])) > 37 &&
 	Math.abs(parseInt(parsedScoreArr[0]) - parseInt(parsedScoreArr[1])) > 1;
 }
 
