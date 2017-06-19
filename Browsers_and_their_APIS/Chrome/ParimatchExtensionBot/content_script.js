@@ -535,7 +535,7 @@ function checkTennisScore(currentScore){
     }
 
     if (parseInt(sets[currentSet].split("-")[currentSetLeader]) - parseInt(sets[currentSet].split("-")[currentSetLooser]) == 2 &&
-        parseInt(currentPoints[currentSetLeader]) > parseInt(currentPoints[currentSetLooser])) {
+        parseInt(currentPoints[currentSetLeader]) > parseInt(currentPoints[currentSetLooser])  && parseInt(currentPoints[currentSetLeader]) > 15) {
         return true;
     }
 
