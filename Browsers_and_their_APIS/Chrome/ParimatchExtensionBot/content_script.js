@@ -5,7 +5,8 @@
 console.log("This is content script from vnc))");
 var betAmount = 3;
 
-var betInterval = setInterval(function () {
+
+var betInterval = setTimeout(function () {
 //alert(1);
     var curBalanceElement = document.querySelector("#ownerInfo tr td:nth-child(7)");
     var betHistory = localStorage.getItem("betHistory") || "";
@@ -23,18 +24,18 @@ var betInterval = setInterval(function () {
         validBets = false;
     }
 
-    if (currBalance < 6){
+    if (currBalance < 10){
 	//if we have zero on balance -> skip 8 iterations ))
         localStorage.afterZeroBalanceCounter = 8;
     }
 
-    if (currBalance >= 6 && validBets) {
+    if (currBalance >= 10 && validBets) {
         if (document.querySelector("#stakeNo[style='color:red']")) {
             window.close();
         }
 
         if(document.querySelector("input[name=sums]")){
-            document.querySelector("input[name=sums]").value = "6";
+            document.querySelector("input[name=sums]").value = "10";
         }
 
         var expressBetElement = document.querySelector("#r1");
@@ -93,8 +94,8 @@ var betInterval = setInterval(function () {
             //alert(localStorage.getItem("wrongBetItems"));
         }
     }
-    setTimeout(function(){window.close()}, 3100);// close window after bet
-}, 4610);
+    setTimeout(function(){window.close()}, 5500);// close window after bet
+}, 3600);
 
 
 // ------------------------------------------------- DOM
@@ -285,7 +286,7 @@ console.log(betRowText);
     ) {
         console.log("WRONG football");
         return false;
-    }
+    } 
 
     if (betRowText.toLowerCase().indexOf("бейсбол") >= 0) {
         return false;
@@ -295,6 +296,9 @@ console.log(betRowText);
         return false;
     }
 
+    if (betRowText.toLowerCase().indexOf("хоккей") >= 0) {
+        return false;
+    }
 
     return true;
 }
@@ -416,7 +420,7 @@ function checkBasketBallScore(currentScore){
     }
 
     var currentScoreArray = currentScore.substring(0, bracketsPositions[0]).split("-");
-    if(parseInt(currentScoreArray[0]) + parseInt(currentScoreArray[1]) < 43){
+    if(parseInt(currentScoreArray[0]) + parseInt(currentScoreArray[1]) < 55){
         return false;
     }
 
@@ -430,11 +434,11 @@ function checkBasketBallScore(currentScore){
     var looser = firstQuarterWinner == 0 ? 1 : 0;
 
     if (firstQuarterWinner == secondQuarterWinner &&
-        (parseInt(quarters[1].split("-")[0]) + parseInt(quarters[1].split("-")[1])) > 17) {
+        (parseInt(quarters[1].split("-")[0]) + parseInt(quarters[1].split("-")[1])) > 20) {
         result = true;
 
         if (quarters.length > 2) {
-            result = result && (Math.abs(parseInt(quarters[2].split("-")[0]) - parseInt(quarters[2].split("-")[1])) < 5 ||
+            result = result && (Math.abs(parseInt(quarters[2].split("-")[0]) - parseInt(quarters[2].split("-")[1])) < 3 ||
                 parseInt(quarters[2].split("-")[firstQuarterWinner]) > parseInt(quarters[2].split("-")[looser]));
         }
     }
@@ -540,7 +544,7 @@ function checkTennisScore(currentScore){
     }
 
     if ( (parseInt(sets[currentSet].split("-")[0]) +
-             parseInt(sets[currentSet].split("-")[1])) < 4 ){
+             parseInt(sets[currentSet].split("-")[1])) < 6 ){
           return false;
     }
 
@@ -560,8 +564,8 @@ function checkHandBallScore(currentScore){
 	}
 	
 	//TODO Add: if scoreSum > 19 and difference > 4 return true
-	return (parseInt(parsedScoreArr[0]) + parseInt(parsedScoreArr[1])) > 37 &&
-	Math.abs(parseInt(parsedScoreArr[0]) - parseInt(parsedScoreArr[1])) > 1;
+	return (parseInt(parsedScoreArr[0]) + parseInt(parsedScoreArr[1])) > 39 &&
+	Math.abs(parseInt(parsedScoreArr[0]) - parseInt(parsedScoreArr[1])) > 3;
 }
 
 function searchEventByTitle(arr, title){
