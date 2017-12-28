@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+	<luceneMatchVersion>LUCENE_48</luceneMatchVersion>
+	<dataDir>${solr.data.dir}/${solr.core.name}/data</dataDir>
+	<directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}" />
+	<codecFactory class="solr.SchemaCodecFactory" />
+	<schemaFactory class="ClassicIndexSchemaFactory" />
+	<indexConfig>
+		<lockType>${solr.lock.type:native}</lockType>
+	</indexConfig>
+	<updateHandler class="solr.DirectUpdateHandler2"/>
+	<query>
+		<maxBooleanClauses>1024</maxBooleanClauses>
+		<filterCache class="solr.FastLRUCache" size="512" initialSize="512" autowarmCount="0" />
+		<queryResultCache class="solr.LRUCache" size="512" initialSize="512" autowarmCount="0" />
+		<documentCache class="solr.LRUCache" size="512" initialSize="512" autowarmCount="0" />
+		<enableLazyFieldLoading>true</enableLazyFieldLoading>
+		<queryResultWindowSize>20</queryResultWindowSize>
+		<queryResultMaxDocsCached>200</queryResultMaxDocsCached>
+		<useColdSearcher>false</useColdSearcher>
+		<maxWarmingSearchers>2</maxWarmingSearchers>
+	</query>
+
+	<!--  
+		Language identifier UpdateRequestProcessor. 
+		Uncomment the following processor in order to enable language detection 
+	-->
+	<updateRequestProcessorChain name="langId">
+		<processor
+			class="org.apache.solr.update.processor.TikaLanguageIdentifierUpdateProcessorFactory">
+			<str name="langid.fl">text</str>
+			<str name="langid.langField">language</str>
+			<str name="langid.fallback">en</str>
+		</processor>
+		<processor class="solr.LogUpdateProcessorFactory" />
+		<processor class="solr.RunUpdateProcessorFactory" />
+	</updateRequestProcessorChain>
+    	
+	<requestDispatcher handleSelect="true">
+		<requestParsers enableRemoteStreaming="true" multipartUploadLimitInKB="2048000" formdataUploadLimitInKB="2048" />
+		<httpCaching never304="true" />
+	</requestDispatcher>
+
+	<!-- A simple handler for checking indexed data  -->
+	<requestHandler name="/query" class="solr.SearchHandler" default="true">
+		<lst name="defaults">
+			<str name="echoParams">explicit</str>
+			<int name="rows">10</int>
+			<str name="q">*:*</str>
+		</lst>
+	</requestHandler>
+
+	<!-- 
+		DataImportHandler sample configuration
+		NOTE: this won't work!! We don't have a database here ;) so don't call it
+	 -->
+	 <requestHandler name="/import" class="org.apache.solr.handler.dataimport.DataImportHandler">
+		<lst name="defaults">
+			<str name="config">data-import-handler-sample-config.xml</str>
+		</lst>
+	</requestHandler>	
+
+	<!-- SolrCell extracting request handler -->
+	<requestHandler name="/update/extract" class="solr.extraction.ExtractingRequestHandler">
+		<lst name="defaults">
+			<str name="fmap.content">text</str>
+			<str name="lowernames">true</str>
+			<str name="captureAttr">true</str>
+			<str name="update.chain">langId</str>
+		</lst>
+	</requestHandler>
+	
+	<!-- Solaritas (Solr + Velocity) request handler -->
+	<requestHandler name="/solritas" class="solr.SearchHandler">
+		<lst name="defaults">
+			<str name="echoParams">explicit</str>
+	
+			<!-- VelocityResponseWriter settings -->
+			<str name="wt">velocity</str>
+			<str name="v.template">browse</str>
+			<str name="v.layout">layout</str>
+			<str name="title">Solritas</str>
+	
+			<str name="qf">text</str>
+			<str name="df">text</str>
+			<str name="q">*:*</str>
+			<str name="q.alt">*:*</str>
+			<str name="rows">10</str>
+			<str name="fl">*,score</str>
+			<str name="mlt.qf">text^0.5 content_type^1.0</str>
+			<str name="mlt.fl">text,content_type</str>
+			<int name="mlt.count">3</int>
+			<str name="facet">on</str>
+			<str name="facet.field">page_count</str>
+			<str name="facet.field">content_type</str>
+			<str name="facet.field">dc_creator</str>
+			<str name="facet.field">meta_author</str>
+			<str name="facet.mincount">1</str>
+	
+			<!-- Highlighting defaults -->
+			<str name="hl">on</str>
+			<str name="hl.fl">text</str>
+			<str name="hl.simple.pre">&lt;b&gt;</str>
+			<str name="hl.simple.post">&lt;/b&gt;</str>
+			<str name="f.title.hl.fragsize">0</str>
+			<str name="f.name.hl.fragsize">0</str>
+			<str name="f.content.hl.snippets">3</str>
+			<str name="f.content.hl.fragsize">200</str>
+			<str name="f.content.hl.alternateField">content</str>
+			<str name="f.content.hl.maxAlternateFieldLength">750</str>
+		</lst>
+	</requestHandler>
+	
+	<!-- Solritas response writer  -->
+	<queryResponseWriter name="velocity" class="solr.VelocityResponseWriter" startup="lazy"/>
+	
+	<!-- Enable the analysis page in the administration console -->
+	<requestHandler name="/analysis/field"  startup="lazy" class="solr.FieldAnalysisRequestHandler" />
+	<requestHandler name="/update" class="solr.UpdateRequestHandler"/>
+	<requestHandler name="/admin/" class="solr.admin.AdminHandlers" />
+	<admin>
+		<defaultQuery>*:*</defaultQuery>
+	</admin>
+</config>
