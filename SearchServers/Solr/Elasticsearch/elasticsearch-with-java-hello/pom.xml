@@ -67,6 +67,12 @@
       <artifactId>jackson-databind</artifactId>
       <version>2.9.3</version>
     </dependency>
+
+    <dependency>
+      <groupId>pl.allegro.tech</groupId>
+      <artifactId>embedded-elasticsearch</artifactId>
+      <version>2.4.2</version>
+    </dependency>
   </dependencies>
 
   <repositories>
@@ -76,6 +82,11 @@
       <url>http://s3.amazonaws.com/download.elasticsearch.org/lucenesnapshots/00142c9</url>
       <releases><enabled>true</enabled></releases>
       <snapshots><enabled>false</enabled></snapshots>
+    </repository>
+    <repository>
+      <id>DataNucleus_Repos2</id>
+      <name>DataNucleus Repository</name>
+      <url>http://www.datanucleus.org/downloads/maven2</url>
     </repository>
   </repositories>
 </project>

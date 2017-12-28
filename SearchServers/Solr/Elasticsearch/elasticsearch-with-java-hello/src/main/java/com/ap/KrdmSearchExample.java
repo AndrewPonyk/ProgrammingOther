@@ -26,18 +26,18 @@ public class KrdmSearchExample {
             client = new RestHighLevelClient(
                     RestClient.builder(
                             new HttpHost("localhost", 9200, "http")));
-            SearchRequest searchRequest = new SearchRequest("krdm1");
+            SearchRequest searchRequest = new SearchRequest("krdm");
             SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
 
-//            sourceBuilder.query(QueryBuilders.boolQuery()
-//                    .must(QueryBuilders.matchQuery("entityName", "MDT_AGE_GRP"))
-////                    .must(QueryBuilders.matchQuery("entityKey", "Veyzzbx"))
-//            );
+            sourceBuilder.query(QueryBuilders.boolQuery()
+                    .must(QueryBuilders.matchQuery("entityName", "MDT_AGE_GRP"))
+//                    .must(QueryBuilders.matchQuery("entityKey", "Veyzzbx"))
+            );
             //simple query
             //sourceBuilder.query(QueryBuilders.wildcardQuery("entityKey", "key*"));
 
             // nested wildcard query
-            sourceBuilder.query(QueryBuilders.nestedQuery("data", QueryBuilders.wildcardQuery("data.Desc", "momoasmuyavtcu"), ScoreMode.Avg));
+//            sourceBuilder.query(QueryBuilders.nestedQuery("data", QueryBuilders.wildcardQuery("data.Desc", "momoasmuyavtcu"), ScoreMode.Avg));
 
 
             //sourceBuilder.from(0);

@@ -30,12 +30,6 @@ public class ElasticSearchDeleteExample {
             client = new RestHighLevelClient(
                     RestClient.builder(
                             new HttpHost("localhost", 9200, "http")));
-            BulkByScrollResponse response =
-                    DeleteByQueryAction.INSTANCE.newRequestBuilder(client)
-                            .filter(QueryBuilders.matchQuery("gender", "male"))
-                            .source("persons")
-                            .get();
-
 
         } finally {
             client.close();
