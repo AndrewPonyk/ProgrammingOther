@@ -1,0 +1,29 @@
+{
+  "doc": {
+    "properties": {
+      "entityName": {
+        "type": "keyword"
+      },
+      "entityKey": {
+        "type": "keyword"
+      },
+      "data": {
+        "type": "nested"
+      },
+      "languageDescriptions": {
+        "type": "nested"
+      },
+      "createdTime": {
+        "type": "keyword"
+      },
+      "modifiedTime": {
+        "type": "keyword"
+      }
+    }
+  },
+  "settings" : {
+    "index" : {
+      "refresh_interval" : "1ms"
+    }
+  }
+}

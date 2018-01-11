@@ -1,0 +1,16 @@
+{
+  "mappings": {
+    "doc": {
+      "properties": {
+        "vendorCode": {
+          "type": "keyword"
+        }
+      }
+    }
+  },
+  "settings" : {
+    "index" : {
+      "refresh_interval" : "1ms"
+    }
+  }
+}
