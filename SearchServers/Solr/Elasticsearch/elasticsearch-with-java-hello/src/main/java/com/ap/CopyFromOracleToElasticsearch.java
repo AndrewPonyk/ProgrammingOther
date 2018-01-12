@@ -42,8 +42,8 @@ public class CopyFromOracleToElasticsearch {
             krdmDto.setLanguageDescriptions(objectMapper.readValue(language_descrptions, new TypeReference<List<LanguageDescriptionDto>>(){}));
 
             ////////////
-            //postDataToEl(objectMapper.writeValueAsString(krdmDto));
-            System.out.println(objectMapper.writeValueAsString(krdmDto));
+            postDataToEl(objectMapper.writeValueAsString(krdmDto));
+            //System.out.println(objectMapper.writeValueAsString(krdmDto));
             System.out.println(counter++);
         }
 
