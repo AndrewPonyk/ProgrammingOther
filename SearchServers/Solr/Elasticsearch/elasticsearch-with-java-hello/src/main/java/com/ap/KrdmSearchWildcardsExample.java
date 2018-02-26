@@ -1,27 +1,31 @@
 package com.ap;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpHost;
+import org.apache.http.client.entity.EntityBuilder;
+import org.apache.http.message.BasicHeader;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.index.query.*;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.HashMap;
 
 public class KrdmSearchWildcardsExample {
+
+
+
     public static void main(String[] args) throws IOException {
         System.out.println("Elaticsearch integration with java");
         RestHighLevelClient client = null;
 
-        System.out.println("*one*two*".replaceAll("\\*", "\\* \\*") +"|");
-        System.out.println(Arrays.toString("*one*two*".replaceAll("\\*", "\\* \\*").split("\\s")));
         try {
             client = new RestHighLevelClient(
                     RestClient.builder(
@@ -50,6 +54,7 @@ public class KrdmSearchWildcardsExample {
             searchRequest.source(sourceBuilder);
 
             SearchResponse search = client.search(searchRequest);
+
 
             for (SearchHit item : search.getHits()) {
                 System.out.println(item.getSourceAsString());
