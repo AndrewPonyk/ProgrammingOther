@@ -22,6 +22,7 @@ function selectBets(betLinks) {
 
         if (betLinks[i].innerText >= "1.03" && betLinks[i].innerText <= "1.11" && checkBet(betRowText)) {
             betLinks[i].click();
+            console.log(betLinks[i].innerText);
         }
     }
     //alert('Bets marked');
@@ -29,9 +30,10 @@ function selectBets(betLinks) {
 }
 
 function set3UAHAndFocusConfirmButton() {
-    document.querySelector("input[name=sums]").value = 3;
+    document.querySelector("input[name=sums]").value = 4;
     document.querySelector("input[type=radio][onclick='enableSingle();']").click();
     document.querySelector("#do_stake").focus();
+    console.log(document.querySelector("#do_stake").click);
     document.querySelector("#do_stake").click();
 }
 
@@ -40,6 +42,10 @@ function checkBet(betRowText) {
     console.log(betRowText);
     // make conditions
     if (betRowText.toLowerCase().indexOf("статистика") >= 0) {
+        return false;
+    }
+
+    if (betRowText.toLowerCase().indexOf("футбол") >= 0) {
         return false;
     }
 
