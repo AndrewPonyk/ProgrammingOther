@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.function.Function;
 
 @Component
-public class Greeter implements Function<String, String> {
+public class SupFunction implements Function<String, String> {
 
     @Autowired
     private ValidationService validationService;
