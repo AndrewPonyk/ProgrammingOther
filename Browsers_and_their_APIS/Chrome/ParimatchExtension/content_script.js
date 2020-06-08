@@ -20,7 +20,7 @@ function selectBets(betLinks) {
     for (var i = 0; i < betLinks.length; i++) {
         var betRowText = betLinks[i].closest("div").previousElementSibling.innerText;
 
-        if (betLinks[i].innerText >= "1.03" && betLinks[i].innerText <= "1.11" && checkBet(betRowText)) {
+        if (betLinks[i].innerText >= "1.03" && betLinks[i].innerText <= "1.09" && checkBet(betRowText)) {
             betLinks[i].click();
             console.log(betLinks[i].innerText);
         }
@@ -41,7 +41,7 @@ function checkBet(betRowText) {
     //TODO:
     console.log(betRowText);
     // make conditions
-    if (betRowText.toLowerCase().indexOf("статистика") >= 0) {
+    if (betRowText.toLowerCase().indexOf("stat") >= 0) {
         return false;
     }
 
@@ -49,7 +49,15 @@ function checkBet(betRowText) {
         return false;
     }
 
-    if (betRowText.toLowerCase().indexOf("бейсбол") >= 0) {
+    if (betRowText.toLowerCase().indexOf("baseball") >= 0) {
+        return false;
+    }
+
+    if (betRowText.toLowerCase().indexOf("billi") >= 0) {
+        return false;
+    }
+
+    if (betRowText.toLowerCase().indexOf("table") >= 0) {
         return false;
     }
 
@@ -58,12 +66,12 @@ function checkBet(betRowText) {
         return false;
     }
 
-    if (betRowText.toLowerCase().indexOf("мол.") >= 0 || betRowText.toLowerCase().indexOf("молод") >= 0) {
+    if (betRowText.toLowerCase().indexOf("your") >= 0 || betRowText.toLowerCase().indexOf("молод") >= 0) {
         return false;
     }
 
     // skip friendly games
-    if (betRowText.toLowerCase().indexOf("товари") >= 0) {
+    if (betRowText.toLowerCase().indexOf("frien") >= 0) {
         return false;
     }
 
