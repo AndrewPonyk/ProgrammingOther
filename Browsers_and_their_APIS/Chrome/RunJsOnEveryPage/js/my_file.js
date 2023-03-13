@@ -16,6 +16,7 @@ document.body.onmousedown = function (e) {
 document.body.onkeydown = function (e) {
     console.log(e.key + e.target);
     if (e.key === "Control") {
+        alert("abc")
         var coef = parseFloat(document.querySelector(".bss-NormalBetItem_OddsContainer ").innerText);
         console.log(coef)
         if (true) {

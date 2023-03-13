@@ -1,0 +1,39 @@
+USING KAFKA 2.3.1 (quite old, almost 2 years from release)
+https://github.com/dilipsundarraj1/kafka-for-developers-using-spring-boot/blob/master/SetUpKafka.md
+
+
+./conf/server.properties - contains BROKER instance configuration !
+
+zookeeper-server-start.bat ..\..\config\zookeeper.properties
+kafka-server-start.bat ..\..\config\server.properties
+
+create topic with 4 partitions:
+kafka-topics.bat --create --topic test-topic -zookeeper localhost:2181 --replication-factor 1 --partitions 4  
+
+How to instantiate a Console Producer?
+Without Key
+kafka-console-producer.bat --broker-list localhost:9092 --topic test-topic
+
+With Key
+kafka-console-producer.bat --broker-list localhost:9092 --topic test-topic --property "key.separator=-" --property "parse.key=true"
+
+Kafka console consumer with key:
+kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic test-topic --from-beginning  --property "key.separator=-" --property "print.key=true"
+
+Kafka console consumer with GROUP id 
+kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic test-topic --group <group-name>
+
+
+Read from OFFSET=0 partition=0 
+windows>kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic test-topic --offset 0  --partition 1 
+--property  "key.separator=-" --property "print.key=true"
+
+
+THE SAME KEYS GOES into SAME partitions (like hashcode and hashmap)
+
+
+List all topics (what if zookeeper now is deprecated ??)
+kafka-topics.bat --zookeeper localhost:2181 --list
+
+View all consumer groups:
+kafka-consumer-groups.bat --bootstrap-server localhost:9092 --list
